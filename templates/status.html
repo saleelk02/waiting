@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}Reservation Status{% endblock %}
+{% block extra_css %}
+<style>
+    .blinking {
+        animation: blink 1s infinite;
+    }
+    @keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    .status-card.confirmed { border-left: 5px solid #28a745; }
+    .status-card.waiting { border-left: 5px solid #ffc107; }
+    .status-card.rejected { border-left: 5px solid #dc3545; }
+</style>
+{% endblock %}
+{% block content %}
+<h2 class="text-primary mb-4 blinking"><i class="fas fa-check-circle me-2"></i>Confirmed Reservations</h2>
+{% if confirmed %}
+<div class="card status-card confirmed shadow mb-4">
+    <div class="card-header bg-success text-white">
+        <h5>Confirmed</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-success table-striped mb-0">
+                <thead>
+                    <tr><th>ID</th><th>Name</th><th>Mobile</th><th>Guests</th><th>Seat Type</th><th>Seat #</th><th>Time</th></tr>
+                </thead>
+                <tbody>
+                    {% for res in confirmed %}
+                    <tr>
+                        <td>{{ res[0] }}</td><td>{{ res[1] }}</td>
+                        <td>
+                            {% set digits = res[2] | replace('-', '') | replace(' ', '') | replace('(', '') | replace(')', '') %}
+                            {% set num_digits = digits | length %}
+                            {% set mask_length = (num_digits - 5) if num_digits > 5 else 0 %}
+                            {{ ('*' * mask_length) ~ (digits[-5:] if num_digits > 5 else digits) }}
+                        </td>
+                        <td>{{ res[4] }}</td><td>{{ res[5] }}</td><td>{{ res[7] }}</td><td>{{ res[9] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info">No confirmed reservations.</div>
+{% endif %}
+
+<h2 class="text-warning mb-4"><i class="fas fa-clock me-2"></i>Waiting List</h2>
+{% if waiting %}
+<div class="card status-card waiting shadow mb-4">
+    <div class="card-header bg-warning text-dark">
+        <h5>Waiting</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-warning table-striped mb-0">
+                <thead>
+                    <tr><th>ID</th><th>Name</th><th>Mobile</th><th>Guests</th><th>Seat Type</th><th>Time</th></tr>
+                </thead>
+                <tbody>
+                    {% for res in waiting %}
+                    <tr>
+                        <td>{{ res[0] }}</td><td>{{ res[1] }}</td>
+                        <td>
+                            {% set digits = res[2] | replace('-', '') | replace(' ', '') | replace('(', '') | replace(')', '') %}
+                            {% set num_digits = digits | length %}
+                            {% set mask_length = (num_digits - 5) if num_digits > 5 else 0 %}
+                            {{ ('*' * mask_length) ~ (digits[-5:] if num_digits > 5 else digits) }}
+                        </td>
+                        <td>{{ res[4] }}</td><td>{{ res[5] }}</td><td>{{ res[9] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info">No waiting reservations.</div>
+{% endif %}
+
+<h2 class="text-danger mb-4"><i class="fas fa-times-circle me-2"></i>Rejected</h2>
+{% if rejected %}
+<div class="card status-card rejected shadow mb-4">
+    <div class="card-header bg-danger text-white">
+        <h5>Rejected</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-danger table-striped mb-0">
+                <thead>
+                    <tr><th>ID</th><th>Name</th><th>Mobile</th><th>Guests</th><th>Seat Type</th><th>Reason</th><th>Time</th></tr>
+                </thead>
+                <tbody>
+                    {% for res in rejected %}
+                    <tr>
+                        <td>{{ res[0] }}</td><td>{{ res[1] }}</td>
+                        <td>
+                            {% set digits = res[2] | replace('-', '') | replace(' ', '') | replace('(', '') | replace(')', '') %}
+                            {% set num_digits = digits | length %}
+                            {% set mask_length = (num_digits - 5) if num_digits > 5 else 0 %}
+                            {{ ('*' * mask_length) ~ (digits[-5:] if num_digits > 5 else digits) }}
+                        </td>
+                        <td>{{ res[4] }}</td><td>{{ res[5] }}</td><td>{{ res[8] }}</td><td>{{ res[9] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info">No rejected reservations.</div>
+{% endif %}
+{% endblock %}

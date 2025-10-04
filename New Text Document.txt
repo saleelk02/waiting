@@ -1,0 +1,3 @@
+SECRET_KEY=Freej@Secret#786$123  # Generate: python -c "import secrets; print(secrets.token_urlsafe(32))"
+MAIL_USERNAME=freejcc786@gmail.com
+MAIL_PASSWORD=wqofubabpzzymfob

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Reservation - Freej Swaeleh Restaurant{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white text-center">
+                <h2><i class="fas fa-calendar-plus me-2"></i>Reserve a Table</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="mobile" class="form-label">Mobile Number</label>
+                            <input type="tel" class="form-control" id="mobile" name="mobile" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="guests" class="form-label">Number of Guests</label>
+                            <input type="number" class="form-control" id="guests" name="guests" min="1" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="seat_type" class="form-label">Seat Type</label>
+                            <select class="form-select" id="seat_type" name="seat_type" required>
+                                <option value="">Choose...</option>
+                                <option value="Cabin">Cabin</option>
+                                <option value="Partition">Partition</option>
+                                <option value="Open Place">Open Place</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Submit Reservation</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
