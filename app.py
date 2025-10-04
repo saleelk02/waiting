@@ -24,25 +24,36 @@ ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = 'password'
 
 # Database setup
-def init_db():
-    conn = sqlite3.connect('reservations.db')
-    c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS reservations
-                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                  name TEXT NOT NULL,
-                  mobile TEXT NOT NULL,
-                  email TEXT NOT NULL,
-                  guests INTEGER NOT NULL,
-                  seat_type TEXT NOT NULL,
-                  status TEXT DEFAULT 'waiting',
-                  seat_number INTEGER,
-                  rejection_reason TEXT,
-                  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-                  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP)''')
-    conn.commit()
-    conn.close()
+import mysql.connector
+from mysql.connector import Error
 
-init_db()
+def init_db():
+    try:
+        conn = mysql.connector.connect(
+            host='yourusername.mysql.pythonanywhere-services.com',  # From dashboard
+            user='yourusername',  # Your PA username
+            password=os.environ.get('DB_PASSWORD'),  # Set in dashboard
+            database='yourusername$reservationdb'  # Create this DB
+        )
+        c = conn.cursor()
+        c.execute('''CREATE TABLE IF NOT EXISTS reservations
+                     (id INT AUTO_INCREMENT PRIMARY KEY,
+                      name VARCHAR(255) NOT NULL,
+                      mobile VARCHAR(20) NOT NULL,
+                      email VARCHAR(255) NOT NULL,
+                      guests INT NOT NULL,
+                      seat_type VARCHAR(50) NOT NULL,
+                      status VARCHAR(20) DEFAULT 'waiting',
+                      seat_number INT,
+                      rejection_reason TEXT,
+                      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)''')
+        conn.commit()
+    except Error as e:
+        print(f"DB Error: {e}")
+    finally:
+        if conn.is_connected():
+            conn.close()
 
 # Function to send email
 def send_email(to_email, subject, body):
