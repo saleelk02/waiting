@@ -1,4 +1,5 @@
 flask==3.0.3
 flask-mail==0.9.1
 gunicorn==22.0.0
-python-dotenv==1.0.1  # Add this line
+python-dotenv==1.0.1  
+mysql-connector-python==9.0.0  # Add this line
